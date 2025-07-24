@@ -132,3 +132,55 @@ export const dummyCards = [
                 duration: 345,
         },
 ];
+
+// constants/index.ts
+export const testimonials = [
+        {
+                avatar: '/assets/images/alex.png',
+                name: 'Alex Carter',
+                title: 'Software Engineer, TechSphere',
+                quote: 'SnapCast is a must-have tool for async standups. I can record once and share updates with the whole team instantly.',
+        },
+        {
+                avatar: '/assets/images/david.png',
+                name: 'David Thompson',
+                title: 'Project Manager, AgileCore',
+                quote: 'Sending video updates with SnapCast cut our meeting time in half. Super efficient for busy teams.',
+        },
+        {
+                avatar: '/assets/images/emily.png',
+                name: 'Emily',
+                title: 'Marketing Lead, BrightEdge',
+                quote: 'I use SnapCast to create quick campaign briefs. Much faster than writing long emails or docs.',
+        },
+        {
+                avatar: '/assets/images/jason.png',
+                name: 'Jason Rivera',
+                title: 'Product Designer, NovaByte',
+                quote: 'SnapCast helps me quickly record prototypes and share them with the team in seconds. No meetings, no heavy files.',
+        },
+        {
+                avatar: '/assets/images/jessica.png',
+                name: 'Jessica Lee',
+                title: 'Customer Success Manager, OnBoardly',
+                quote: 'Clients love getting SnapCast videos instead of long tutorials. It’s easier for everyone.',
+        },
+        {
+                avatar: '/assets/images/lisa.png',
+                name: 'Lisa Nguyen',
+                title: 'UX Researcher, FlowLab',
+                quote: 'SnapCast is my go-to tool for recording usability tests and instantly sharing them with the dev team.',
+        },
+        {
+                avatar: '/assets/images/michael.png',
+                name: 'Michael Brown',
+                title: 'CTO, FutureStack',
+                quote: 'Whenever I need to demo a feature, I just record with SnapCast and send the link. Way better than scheduling a meeting.',
+        },
+        {
+                avatar: '/assets/images/sarah.png',
+                name: 'Sarah Kim',
+                title: 'Creative Director, PixelPulse',
+                quote: 'I love using SnapCast to showcase design walkthroughs. It saves me hours of back-and-forth.',
+        },
+];
