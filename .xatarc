@@ -1,0 +1,6 @@
+{
+  "databaseURL": "https://Dang-Hoang-Ha-s-workspace-uai5dh.eu-central-1.xata.sh/db/snapcast",
+  "codegen": {
+    "output": "src/xata.ts"
+  }
+}

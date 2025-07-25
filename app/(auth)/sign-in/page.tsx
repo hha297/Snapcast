@@ -4,6 +4,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import React, { useState, useEffect } from 'react';
 import { testimonials } from '@/constants';
+import { authClient } from '@/lib/auth-client';
 
 const SignInPage = () => {
         const [currentIndex, setCurrentIndex] = useState(0);
@@ -17,11 +18,19 @@ const SignInPage = () => {
 
         const testimonial = testimonials[currentIndex];
 
+        const handleSignIn = async (provider: 'google' | 'github') => {
+                try {
+                        await authClient.signIn.social({ provider });
+                } catch (error) {
+                        console.error('Sign-in error:', error);
+                }
+        };
+
         return (
                 <main className="sign-in">
                         <aside className="testimonial">
-                                <Link href={'/'}>
-                                        <Image src={'/assets/icons/logo.svg'} alt="logo" width={32} height={32} />
+                                <Link href="/">
+                                        <Image src="/assets/icons/logo.svg" alt="logo" width={32} height={32} />
                                         <h1>Snapcast</h1>
                                 </Link>
 
@@ -33,7 +42,7 @@ const SignInPage = () => {
                                                 <figure className="flex gap-1">
                                                         {Array.from({ length: 5 }).map((_, index) => (
                                                                 <Image
-                                                                        src={'/assets/icons/star.svg'}
+                                                                        src="/assets/icons/star.svg"
                                                                         alt="star"
                                                                         width={20}
                                                                         height={20}
@@ -65,30 +74,25 @@ const SignInPage = () => {
 
                         <aside className="google-sign-in">
                                 <section>
-                                        <Link href={'/'}>
-                                                <Image
-                                                        src={'/assets/icons/logo.svg'}
-                                                        alt="logo"
-                                                        width={40}
-                                                        height={40}
-                                                />
+                                        <Link href="/">
+                                                <Image src="/assets/icons/logo.svg" alt="logo" width={40} height={40} />
                                                 <h1>Snapcast</h1>
                                         </Link>
                                         <p>
                                                 Create and share your very first <span>SnapCast Video</span> in no time
                                         </p>
-                                        <button>
+                                        <button onClick={() => handleSignIn('google')}>
                                                 <Image
-                                                        src={'/assets/icons/google.svg'}
+                                                        src="/assets/icons/google.svg"
                                                         alt="google"
                                                         width={20}
                                                         height={20}
                                                 />
                                                 <span>Sign in with Google</span>
                                         </button>
-                                        <button>
+                                        <button onClick={() => handleSignIn('github')}>
                                                 <Image
-                                                        src={'/assets/icons/github.svg'}
+                                                        src="/assets/icons/github.svg"
                                                         alt="github"
                                                         width={24}
                                                         height={24}
