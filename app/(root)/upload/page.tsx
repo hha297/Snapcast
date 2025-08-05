@@ -2,16 +2,33 @@
 import { FileInput } from '@/components/FileInput';
 import { FormField } from '@/components/FormField';
 import { MAX_THUMBNAIL_SIZE, MAX_VIDEO_SIZE } from '@/constants';
+import { getThumbnailUploadUrl, getVideoUploadUrl, saveVideoDetails } from '@/lib/actions/video';
 import { useFileInput } from '@/lib/hooks/useFileInput';
-import React, { ChangeEvent, FormEvent, useState } from 'react';
+import { useRouter } from 'next/navigation';
+import React, { ChangeEvent, FormEvent, useEffect, useState } from 'react';
 
+const uploadFileToBunny = (file: File, uploadUrl: string, accessKey: string): Promise<void> => {
+        return fetch(uploadUrl, {
+                method: 'PUT',
+                headers: {
+                        'Content-Type': file.type,
+                        AccessKey: accessKey,
+                },
+                body: file,
+        }).then((response) => {
+                if (!response.ok) throw new Error(response.statusText);
+        });
+};
 const UploadPage = () => {
+        const router = useRouter();
         const [error, setError] = useState('');
         const [formData, setFormData] = useState({
                 title: '',
                 description: '',
                 visibility: 'public',
         });
+        const [videoDuration, setVideoDuration] = useState(0);
+
         const [isSubmitting, setIsSubmitting] = useState(false);
         const video = useFileInput(MAX_VIDEO_SIZE);
         const thumbnail = useFileInput(MAX_THUMBNAIL_SIZE);
@@ -20,6 +37,11 @@ const UploadPage = () => {
                 setFormData((prevFormData) => ({ ...prevFormData, [name]: value }));
         };
 
+        useEffect(() => {
+                if (video.duration !== null || 0) {
+                        setVideoDuration(video.duration);
+                }
+        }, [video.duration]);
         const handleSubmit = async (e: FormEvent) => {
                 e.preventDefault();
 
@@ -35,6 +57,37 @@ const UploadPage = () => {
                                 setError('Please fill in title and description');
                                 return;
                         }
+
+                        const {
+                                videoId,
+                                uploadUrl: videoUploadUrl,
+                                accessKey: videoAccessKey,
+                        } = await getVideoUploadUrl();
+
+                        if (!videoUploadUrl || !videoAccessKey) throw new Error('Failed to get video credentials');
+
+                        await uploadFileToBunny(video.file, videoUploadUrl, videoAccessKey);
+
+                        const {
+                                uploadUrl: thumbnailUploadUrl,
+                                accessKey: thumbnailAccessKey,
+                                cdnUrl: thumbnailCdnUrl,
+                        } = await getThumbnailUploadUrl(videoId);
+
+                        if (!thumbnailUploadUrl || !thumbnailCdnUrl || !thumbnailAccessKey)
+                                throw new Error('Failed to get thumbnail credentials');
+
+                        await uploadFileToBunny(thumbnail.file, thumbnailUploadUrl, thumbnailAccessKey);
+
+                        await saveVideoDetails({
+                                videoId,
+                                thumbnailUrl: thumbnailCdnUrl,
+                                ...formData,
+                                visibility: formData.visibility as Visibility,
+                                duration: videoDuration,
+                        });
+
+                        router.push(`/video/${videoId}`);
                 } catch (error) {
                         console.log(error);
                 } finally {
