@@ -1,8 +1,9 @@
 'use client';
 
+import { authClient } from '@/lib/auth-client';
 import Image from 'next/image';
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
+import { redirect, useRouter } from 'next/navigation';
 import React from 'react';
 
 const user = {};
@@ -30,7 +31,18 @@ export const Navbar = () => {
                                                                 height={32}
                                                         />
                                                 </button>
-                                                <button className="cursor-pointer">
+                                                <button
+                                                        onClick={async () => {
+                                                                return await authClient.signOut({
+                                                                        fetchOptions: {
+                                                                                onSuccess: () => {
+                                                                                        redirect('/sign-in');
+                                                                                },
+                                                                        },
+                                                                });
+                                                        }}
+                                                        className="cursor-pointer"
+                                                >
                                                         <Image
                                                                 src={'/assets/icons/logout.svg'}
                                                                 alt="Logout"
