@@ -6,9 +6,10 @@ import Link from 'next/link';
 import { redirect, useRouter } from 'next/navigation';
 import React from 'react';
 
-const user = {};
 export const Navbar = () => {
         const router = useRouter();
+        const { data: session } = authClient.useSession();
+        const user = session?.user;
         return (
                 <header className="navbar">
                         <nav>
@@ -21,14 +22,14 @@ export const Navbar = () => {
                                         <figure>
                                                 <button
                                                         className="upload-btn"
-                                                        onClick={() => router.push('/profile/id')}
+                                                        onClick={() => router.push(`/profile/${user.id}`)}
                                                 >
                                                         <Image
-                                                                src={'/assets/images/dummy.jpg'}
+                                                                src={user.image || '/assets/images/dummy.jpg'}
                                                                 alt="Upload"
                                                                 className="rounded-full aspect-square"
-                                                                width={32}
-                                                                height={32}
+                                                                width={40}
+                                                                height={40}
                                                         />
                                                 </button>
                                                 <button
