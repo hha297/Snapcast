@@ -1,7 +1,7 @@
 import { EmptyState } from '@/components/EmptyState';
 import { Header } from '@/components/Header';
 import { VideoCard } from '@/components/VideoCard';
-import { dummyCards } from '@/constants';
+
 import { getAllVideos } from '@/lib/actions/video';
 import React from 'react';
 
@@ -35,12 +35,6 @@ const Page = async ({ searchParams }: SearchParams) => {
                                         description="Try adjusting your search"
                                 />
                         )}
-                        <p>Popular Videos</p>
-                        <section className="video-grid">
-                                {dummyCards.map((card) => (
-                                        <VideoCard key={card.id} {...card} visibility={card.visibility as Visibility} />
-                                ))}
-                        </section>
                 </div>
         );
 };
